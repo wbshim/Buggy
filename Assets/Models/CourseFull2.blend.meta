@@ -1,0 +1,219 @@
+fileFormatVersion: 2
+guid: daf5c2d292336fe499e6c19ee0a83ed9
+ModelImporter:
+  serializedVersion: 22
+  fileIDToRecycleName:
+    100000: backhills
+    100002: backhillssidewalk
+    100004: Brake
+    100006: chute
+    100008: chutesidewalks
+    100010: Conservatory
+    100012: course_001
+    100014: course_002
+    100016: //RootNode
+    100018: flagstaff
+    100020: flagstaffb
+    100022: freeroll
+    100024: freerollsidewalks
+    100026: GpsiesTrack_gpx
+    100028: GpsiesTrack_gpx_001
+    100030: hill1
+    100032: hill1sidewalks
+    100034: hill2
+    100036: hill2sidewalks
+    100038: Hunt
+    100040: Plane
+    100042: Plane_001
+    100044: Porter
+    100046: Skibo
+    100048: Tepper
+    100050: Tepper2
+    400000: backhills
+    400002: backhillssidewalk
+    400004: Brake
+    400006: chute
+    400008: chutesidewalks
+    400010: Conservatory
+    400012: course_001
+    400014: course_002
+    400016: //RootNode
+    400018: flagstaff
+    400020: flagstaffb
+    400022: freeroll
+    400024: freerollsidewalks
+    400026: GpsiesTrack_gpx
+    400028: GpsiesTrack_gpx_001
+    400030: hill1
+    400032: hill1sidewalks
+    400034: hill2
+    400036: hill2sidewalks
+    400038: Hunt
+    400040: Plane
+    400042: Plane_001
+    400044: Porter
+    400046: Skibo
+    400048: Tepper
+    400050: Tepper2
+    2100000: Material_001
+    2100002: Material_001__roadUV_001
+    2100004: unnamed
+    2300000: backhills
+    2300002: backhillssidewalk
+    2300004: Brake
+    2300006: chute
+    2300008: chutesidewalks
+    2300010: Conservatory
+    2300012: course_001
+    2300014: course_002
+    2300016: flagstaff
+    2300018: flagstaffb
+    2300020: freeroll
+    2300022: freerollsidewalks
+    2300024: GpsiesTrack_gpx
+    2300026: GpsiesTrack_gpx_001
+    2300028: hill1
+    2300030: hill1sidewalks
+    2300032: hill2
+    2300034: hill2sidewalks
+    2300036: Hunt
+    2300038: Plane
+    2300040: Plane_001
+    2300042: Porter
+    2300044: Skibo
+    2300046: Tepper
+    2300048: Tepper2
+    3300000: backhills
+    3300002: backhillssidewalk
+    3300004: Brake
+    3300006: chute
+    3300008: chutesidewalks
+    3300010: Conservatory
+    3300012: course_001
+    3300014: course_002
+    3300016: flagstaff
+    3300018: flagstaffb
+    3300020: freeroll
+    3300022: freerollsidewalks
+    3300024: GpsiesTrack_gpx
+    3300026: GpsiesTrack_gpx_001
+    3300028: hill1
+    3300030: hill1sidewalks
+    3300032: hill2
+    3300034: hill2sidewalks
+    3300036: Hunt
+    3300038: Plane
+    3300040: Plane_001
+    3300042: Porter
+    3300044: Skibo
+    3300046: Tepper
+    3300048: Tepper2
+    4300000: backhillssidewalk
+    4300002: chutesidewalks
+    4300004: freerollsidewalks
+    4300006: hill2sidewalks
+    4300008: hill1sidewalks
+    4300010: chute
+    4300012: freeroll
+    4300014: hill2
+    4300016: hill1
+    4300018: flagstaff
+    4300020: course_002
+    4300022: Conservatory
+    4300024: Porter
+    4300026: Hunt
+    4300028: Tepper2
+    4300030: Tepper
+    4300032: Skibo
+    4300034: Brake
+    4300036: flagstaffb
+    4300038: course_001
+    4300040: Plane_001
+    4300042: backhills
+    4300044: GpsiesTrack_gpx_001
+    4300046: Plane
+    4300048: GpsiesTrack_gpx
+    7400000: Default Take
+    9500000: //RootNode
+    2186277476908879412: ImportLogs
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
