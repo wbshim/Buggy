@@ -26,6 +26,8 @@ public class Transition : MonoBehaviour {
             buggy = other.transform.parent.GetComponentInChildren<Buggy5>();
             buggy.InTransition = true;
             Debug.Log("Buggy entered transition zone to Hill " + NextHill);
+            if (NextHill == 3)
+                buggy.Transition();
             // UI indicate transition time
         }
     }

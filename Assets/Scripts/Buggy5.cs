@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Buggy5 : MonoBehaviour {
 
+    public Swipe swipeControls;
     float heatDuration;
 
     public float maxSpeed;
@@ -13,7 +14,7 @@ public class Buggy5 : MonoBehaviour {
     {
         get { return shoveStartTime; }
     }
-    public float shoveMultiplier = 1.5f;
+    public float maxShoveStrength;
     float speed;
     public float Speed
     {
@@ -102,11 +103,7 @@ public class Buggy5 : MonoBehaviour {
         currentHill = 1;
         StartCoroutine("LookDirection");
         currentPusher = pushers[0];
-        //foreach(Pusher3 pusher in pushers)
-        //    pusher.SetBuggy(this);
-
-        pushers[0].SetBuggy(this);
-        pushers[1].SetBuggy(this);
+        
         foreach(Pusher3 p in pushers)
         {
             if (p != null)
@@ -118,7 +115,6 @@ public class Buggy5 : MonoBehaviour {
         }
         heatDuration = 0;
         pushbar = GetComponentInChildren<Pushbar>();
-        //GFX.rotation = Quaternion.LookRotation(-Vector3.forward);
     }
 	
 	// Update is called once per frame
@@ -136,21 +132,24 @@ public class Buggy5 : MonoBehaviour {
             }
         }
         
-        if(Input.GetKeyDown("w"))
+        if(Input.GetMouseButtonDown(0))
         {
             tapTime = Time.time - tapStartTime;
             tapSpeed = minTapTime / tapTime;
             tapStartTime = Time.time;
         }
-        if (Input.GetKeyDown("e"))
+        if (swipeControls.SwipeUp)
         {
-            if(beingPushed)
-                Shove(shoveMultiplier);
-        }
-        if(Input.GetKeyDown("r"))
-        {
+            //Debug.Log("Swipe speed = " + swipeControls.SwipeSpeed + ". Shove strength = " + (maxShoveStrength * swipeControls.SwipeSpeed / 5000));
             if (beingPushed)
-                Shove(shoveMultiplier / 2);
+            {
+                if (maxShoveStrength * swipeControls.SwipeSpeed / 5000 > speed + 2.5)
+                    Shove(maxShoveStrength * swipeControls.SwipeSpeed / 5000);
+                else
+                {
+                    Debug.Log("Current speed is " + speed + ". Shove strength = " + (maxShoveStrength * swipeControls.SwipeSpeed / 5000) + ". Shove not strong enough. Swipe faster.");
+                }
+            }
         }
         if(Input.GetKeyDown("c"))
         {
@@ -179,7 +178,6 @@ public class Buggy5 : MonoBehaviour {
                 tapSpeed = 0;
             }
         }
-        
         // Kinematics
         if(speed > 0)
         {
@@ -284,7 +282,7 @@ public class Buggy5 : MonoBehaviour {
         StartCoroutine(_tempSkipMeshUpdate);
 
         shoveStartTime = Time.time;
-        speed = Mathf.Max(5, speed * strength);
+        speed = strength;
     }
 
     public void Transition()
@@ -292,6 +290,8 @@ public class Buggy5 : MonoBehaviour {
         // Transition to next pusher
         Pusher3 lastPusher = currentPusher;
         currentPusher = pushers[lastPusher.hill];
+        inTransition = false;
+        Debug.Log("Transitioning from Hill " + lastPusher.hill + " pusher to Hill " + currentPusher.hill + " pusher");
         lastPusher.TransitionOut();
     }
     void BuggyMeshUpdate()

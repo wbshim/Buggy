@@ -35,6 +35,8 @@ public class Pusher3 : MonoBehaviour {
         }
     }
 
+    bool minBuggyDistReached = false;
+
     // Use this for initialization
     void Start () {
         controller = GetComponent<CharacterController>();
@@ -50,8 +52,14 @@ public class Pusher3 : MonoBehaviour {
     {
         controller.Move(transform.forward * _speed * Time.deltaTime);
         controller.Move(-transform.up * 9.8f * Time.deltaTime);
+        float distToBuggy = Vector3.Distance(buggy.transform.position, transform.position);
         float relPosToBuggy = Vector3.Dot(buggy.transform.position - transform.position, transform.forward);
-        if (relPosToBuggy > 0 && lookAtBuggy)
+        //Debug.Log("Distance to buggy = " + distToBuggy);
+        if(distToBuggy < 5)
+        {
+            minBuggyDistReached = true;
+        }
+        if (relPosToBuggy > 0 && minBuggyDistReached && lookAtBuggy)
             LookAtBuggy();
     }
     void LookAtBuggy()
