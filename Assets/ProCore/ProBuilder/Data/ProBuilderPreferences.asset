@@ -20,6 +20,7 @@ MonoBehaviour:
   - pbGrowSelectionUsingAngle
   - pbGrowSelectionAngleIterative
   - pbEnableBackfaceSelection
+  - pbCollapseVertexToFirst
   m_Int_keys:
   - pbHandleAlignment
   - pbDefaultEditLevel
@@ -38,12 +39,12 @@ MonoBehaviour:
   - pbCurrentMaterialPalette
   m_Color_keys: []
   m_Material_keys: []
-  m_Bool_values: 0001000101010101
-  m_Int_values: 00000000000000000200000000000000010000000200000008000000
+  m_Bool_values: 000000010101010001
+  m_Int_values: 00000000010000000200000000000000010000000200000008000000
   m_Float_values:
   - 0
   - 0
-  - 0.25
+  - -10
   - 90
   - 0.001
   m_String_values:

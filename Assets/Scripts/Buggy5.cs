@@ -23,7 +23,9 @@ public class Buggy5 : MonoBehaviour {
     float targetSpeed;
     float pusherSpeed;
     public float speedSmooth;
-    public float rotationSpeed;
+    public float maxRotationSpeed;
+    float targetRotationSpeed;
+    float rotationSpeed;
     Vector3 lastPos;
     Vector3 vel;
     public Vector3 Vel
@@ -47,11 +49,16 @@ public class Buggy5 : MonoBehaviour {
     float acc;
     bool gravityEnabled = false;
 
-    // Tapping parameters
+    // Pushing input
     public float minTapTime;
     float tapTime;
     float tapStartTime;
     float tapSpeed; // Essentially percentage of minimum tap speed
+
+
+    // Turning input
+    Vector3 turnAccel;
+    public float TurnSmoothing = 5f;
 
     // Pushers
     public Pusher3[] pushers;
@@ -97,7 +104,9 @@ public class Buggy5 : MonoBehaviour {
         }
     }
 	// Use this for initialization
-	void Start () {
+	void Start ()
+    {
+        turnAccel = Input.acceleration;
         acc = 0f;
         lastPos = transform.position;
         currentHill = 1;
@@ -140,28 +149,30 @@ public class Buggy5 : MonoBehaviour {
         }
         if (swipeControls.SwipeUp)
         {
-            //Debug.Log("Swipe speed = " + swipeControls.SwipeSpeed + ". Shove strength = " + (maxShoveStrength * swipeControls.SwipeSpeed / 5000));
-            if (beingPushed)
+            if(swipeControls.NumFingers == 1)
             {
-                if (maxShoveStrength * swipeControls.SwipeSpeed / 5000 > speed + 2.5)
-                    Shove(maxShoveStrength * swipeControls.SwipeSpeed / 5000);
-                else
+                if (beingPushed)
                 {
-                    Debug.Log("Current speed is " + speed + ". Shove strength = " + (maxShoveStrength * swipeControls.SwipeSpeed / 5000) + ". Shove not strong enough. Swipe faster.");
+                    float shoveStrength = Mathf.Clamp(maxShoveStrength * swipeControls.SwipeSpeed / 1500, speed + 2, maxShoveStrength);
+                    Debug.Log("Shoving. Shove strength = " + shoveStrength);
+                    Shove(shoveStrength);
                 }
             }
+            else if(swipeControls.NumFingers == 2)
+            {
+                Debug.Log("Shoved to next pusher: " + swipeControls.SwipeSpeed + ". Shove strength = " + (maxShoveStrength * swipeControls.SwipeSpeed / 1500));
+                if (beingPushed)
+                {
+                    float shoveStrength = Mathf.Clamp(1.50f * maxShoveStrength * swipeControls.SwipeSpeed / 1500, 1.50f * speed + 2, maxShoveStrength);
+                    Shove(shoveStrength);
+                    Transition();
+                }
+            }
+
         }
         if(Input.GetKeyDown("c"))
         {
             Transition();
-        }
-        if (Input.GetKey("a"))
-        {
-            transform.Rotate(-transform.up * rotationSpeed * Time.deltaTime);
-        }
-        if (Input.GetKey("d"))
-        {
-            transform.Rotate(transform.up * rotationSpeed * Time.deltaTime);
         }
         if(Input.GetKeyDown("f"))
         {
@@ -178,8 +189,16 @@ public class Buggy5 : MonoBehaviour {
                 tapSpeed = 0;
             }
         }
-        // Kinematics
-        if(speed > 0)
+
+        #region Turning Controls
+        turnAccel = Vector3.Lerp(turnAccel, Input.acceleration, TurnSmoothing * Time.deltaTime);
+        Turn();
+        UpdateRotationSpeed();
+        CheckWheelSlip();
+        #endregion
+
+        #region Kinematics
+        if (speed > 0)
         {
             if (Vector3.Angle(GFX.forward, vel) > 90)
             {
@@ -208,7 +227,7 @@ public class Buggy5 : MonoBehaviour {
                 gravityEnabled = true;
             }
         }
-
+        #endregion
         pusherSpeed = Mathf.Floor(Mathf.Lerp(pusherSpeed, currentPusher.maxPusherSpeed * tapSpeed, 5f * Time.deltaTime) * 1000) / 1000;
 
         // Run the pusher
@@ -267,22 +286,29 @@ public class Buggy5 : MonoBehaviour {
     {
         if(shoveStartTime > 0)
         {
-            if(Time.time - shoveStartTime < 1f)
+            if(Time.time - shoveStartTime < 0.5f)
             {
                 Debug.Log("Shoving too often!");
                 return;
             }
         }
-        beingPushed = false;
-        currentPusher.IsPushing = false;
-        // Skip graphics update for some time
-        if (_tempSkipMeshUpdate != null)
-            StopCoroutine(_tempSkipMeshUpdate);
-        _tempSkipMeshUpdate = tempSkipMeshUpdate(0.25f);
-        StartCoroutine(_tempSkipMeshUpdate);
+        if(beingPushed)
+        {
+            beingPushed = false;
+            currentPusher.IsPushing = false;
+            // Skip graphics update for some time
+            if (_tempSkipMeshUpdate != null)
+                StopCoroutine(_tempSkipMeshUpdate);
+            _tempSkipMeshUpdate = tempSkipMeshUpdate(0.25f);
+            StartCoroutine(_tempSkipMeshUpdate);
 
-        shoveStartTime = Time.time;
-        speed = strength;
+            shoveStartTime = Time.time;
+            speed = strength;
+        }
+        else
+        {
+            Debug.Log("Not at buggy");
+        }
     }
 
     public void Transition()
@@ -291,7 +317,7 @@ public class Buggy5 : MonoBehaviour {
         Pusher3 lastPusher = currentPusher;
         currentPusher = pushers[lastPusher.hill];
         inTransition = false;
-        Debug.Log("Transitioning from Hill " + lastPusher.hill + " pusher to Hill " + currentPusher.hill + " pusher");
+        //Debug.Log("Transitioning from Hill " + lastPusher.hill + " pusher to Hill " + currentPusher.hill + " pusher");
         lastPusher.TransitionOut();
     }
     void BuggyMeshUpdate()
@@ -349,5 +375,36 @@ public class Buggy5 : MonoBehaviour {
     {
         return transform.eulerAngles.y;
     }
+    void Turn()
+    {
+        rotationSpeed = targetRotationSpeed * -turnAccel.x;
+        transform.Rotate(-transform.up * rotationSpeed * Time.deltaTime);
+    }
+    void UpdateRotationSpeed()
+    {
+        if(speed <= 2f)
+        {
+            targetRotationSpeed = maxRotationSpeed / 2f * speed;
+        }
+        else
+        {
+            targetRotationSpeed = maxRotationSpeed;
+        }
 
+    }
+    void CheckWheelSlip()
+    {
+        float minSpeedDecreasingTraction = 15f;
+        float maxSpeedDecreasingTraction = 20f;
+        float minSlipRotationSpeed = maxRotationSpeed * 0.6f;
+        float slipSlope = (minSlipRotationSpeed - maxRotationSpeed) / (maxSpeedDecreasingTraction - minSpeedDecreasingTraction);
+        float wheelSlipRotationSpeed;
+        if (speed < minSpeedDecreasingTraction)
+            wheelSlipRotationSpeed = maxRotationSpeed + 1;
+        else if (speed >= maxSpeedDecreasingTraction)
+            wheelSlipRotationSpeed = minSlipRotationSpeed;
+        else
+            wheelSlipRotationSpeed = slipSlope * (speed - minSpeedDecreasingTraction) + minSlipRotationSpeed;
+        Debug.Log("Buggy speed: " + speed + ", Rotation speed: " + Mathf.Abs(rotationSpeed) + ", Wheels slip if turning at " + wheelSlipRotationSpeed);
+    }
 }

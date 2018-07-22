@@ -27,14 +27,13 @@ public class Swipe : MonoBehaviour {
         else if(Input.GetMouseButtonUp(0))
         {
             endTouchTime = Time.time;
-            swipeTime = Time.time - startTouchTime;
-            DirectionCheck();
             isDragging = false;
             Reset();
         }
+        DirectionCheck();
         #endregion
         #region Mobile Inputs
-        if(Input.touches.Length > 0 )
+        if (Input.touches.Length > 0 )
         {
             if(Input.touches[0].phase == TouchPhase.Began)
             {
@@ -48,11 +47,10 @@ public class Swipe : MonoBehaviour {
             {
 
                 endTouchTime = Time.time;
-                swipeTime = Time.time - startTouchTime;
-                DirectionCheck();
                 isDragging = false;
                 Reset();
             }
+            DirectionCheck();
         }
         #endregion
         // Calculate the distance
@@ -76,8 +74,11 @@ public class Swipe : MonoBehaviour {
     private void DirectionCheck()
     {
         // Did we cross the deadzone?
-        if (swipeDelta.magnitude > 20)
+        if (swipeDelta.magnitude > 100 && isDragging)
         {
+            isDragging = false;
+            swipeTime = Time.time - startTouchTime;
+            Debug.Log("Swiped");
             // Which direction?
             float x = swipeDelta.x;
             float y = swipeDelta.y;
@@ -98,9 +99,11 @@ public class Swipe : MonoBehaviour {
                     swipeUp = true;
             }
             swipeSpeed = swipeDelta.magnitude / swipeTime;
+            Reset();
         }
     }
 
+    public int NumFingers { get { return Input.touches.Length; } }
     public Vector2 SwipeDelta { get { return swipeDelta; } }
     public bool SwipeLeft { get { return swipeLeft; } }
     public bool SwipeRight { get { return swipeRight; } }
