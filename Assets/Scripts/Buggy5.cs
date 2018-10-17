@@ -14,7 +14,7 @@ public class Buggy5 : MonoBehaviour {
     {
         get { return shoveStartTime; }
     }
-    public float maxShoveStrength;
+    public float minShoveStrength;
     float speed;
     public float Speed
     {
@@ -149,37 +149,28 @@ public class Buggy5 : MonoBehaviour {
         }
         if (swipeControls.SwipeUp)
         {
+            //if(swipeControls.NumFingers == 1)
+            //{
+            //    if (beingPushed)
+            //    {
+            //        float shoveStrength = Mathf.Clamp(maxShoveStrength * swipeControls.SwipeSpeed / 1500, speed + 2, maxShoveStrength);
+            //        Debug.Log("Shoving. Shove strength = " + shoveStrength);
+            //        Shove(shoveStrength);
+            //    }
+            //}
             if(swipeControls.NumFingers == 1)
             {
                 if (beingPushed)
                 {
-                    float shoveStrength = Mathf.Clamp(maxShoveStrength * swipeControls.SwipeSpeed / 1500, speed + 2, maxShoveStrength);
-                    Debug.Log("Shoving. Shove strength = " + shoveStrength);
-                    Shove(shoveStrength);
-                }
-            }
-            else if(swipeControls.NumFingers == 2)
-            {
-                Debug.Log("Shoved to next pusher: " + swipeControls.SwipeSpeed + ". Shove strength = " + (maxShoveStrength * swipeControls.SwipeSpeed / 1500));
-                if (beingPushed)
-                {
-                    float shoveStrength = Mathf.Clamp(1.50f * maxShoveStrength * swipeControls.SwipeSpeed / 1500, 1.50f * speed + 2, maxShoveStrength);
+                    //float shoveStrength = Mathf.Clamp(1.50f * maxShoveStrength * swipeControls.SwipeSpeed / 1500, 1.50f * speed + 2, maxShoveStrength);
+                    float shoveStrength = Mathf.Max(minShoveStrength, speed * 1.75f);
+                    Debug.Log("Shoved to next pusher: " + ". Shove strength = " + (shoveStrength));
                     Shove(shoveStrength);
                     Transition();
                 }
             }
 
         }
-        if(Input.GetKeyDown("c"))
-        {
-            Transition();
-        }
-        if(Input.GetKeyDown("f"))
-        {
-            BeingPushed = true;
-        }
-        if (Input.GetKeyDown("space"))
-            speed = 0;
         if (Time.time - tapStartTime > 0.5f)
         {
             if (tapSpeed > 0.05f)
@@ -405,6 +396,6 @@ public class Buggy5 : MonoBehaviour {
             wheelSlipRotationSpeed = minSlipRotationSpeed;
         else
             wheelSlipRotationSpeed = slipSlope * (speed - minSpeedDecreasingTraction) + minSlipRotationSpeed;
-        Debug.Log("Buggy speed: " + speed + ", Rotation speed: " + Mathf.Abs(rotationSpeed) + ", Wheels slip if turning at " + wheelSlipRotationSpeed);
+        //Debug.Log("Buggy speed: " + speed + ", Rotation speed: " + Mathf.Abs(rotationSpeed) + ", Wheels slip if turning at " + wheelSlipRotationSpeed);
     }
 }
