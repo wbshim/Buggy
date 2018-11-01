@@ -36,7 +36,7 @@ public class Buggy5 : MonoBehaviour {
         }
     }
     Vector3 lookDirection = new Vector3();
-
+    Quaternion lookRotation = new Quaternion();
 
     // Graphics
     public Transform GFX;
@@ -316,12 +316,12 @@ public class Buggy5 : MonoBehaviour {
         inclineAngle = Vector3.Angle(GFX.forward, Vector3.up) * Mathf.Deg2Rad;
         if (vel.magnitude > 0.25f)
         {
-            if (Quaternion.Angle(GFX.rotation, Quaternion.LookRotation(lookDirection)) > 0.5f)
+            if (Quaternion.Angle(GFX.rotation, lookRotation) > 0.5f)
             {
                 if (!skipMeshUpdate)
-                    GFX.rotation = Quaternion.Slerp(GFX.rotation, Quaternion.LookRotation(lookDirection), 10 * Time.deltaTime);
+                    GFX.rotation = Quaternion.Slerp(GFX.rotation, lookRotation, 10 * Time.deltaTime);
             }
-            GFX.position = transform.position + GFX.transform.up / 2;
+            GFX.position = transform.position + GFX.transform.up / 2 - Vector3.forward * 2; // To do: Add y and z offset for buggy
         }
     }
     IEnumerator setMaxPusherSpeed(float s, float d)
@@ -348,6 +348,8 @@ public class Buggy5 : MonoBehaviour {
                     lookDirection = transform.position - lastPos;
                 }
             }
+            //lookRotation = Quaternion.LookRotation(lookDirection) * Quaternion.Euler(-90, 0, 90);
+            lookRotation = Quaternion.LookRotation(lookDirection);
             yield return new WaitForSeconds(0.05f);
         }
     }
