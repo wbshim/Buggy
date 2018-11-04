@@ -40,6 +40,7 @@ public class Buggy5 : MonoBehaviour {
 
     // Graphics
     public Transform GFX;
+    public Vector3 MeshPositionOffset;
     float inclineAngle;
     bool skipMeshUpdate = false;
     private IEnumerator _tempSkipMeshUpdate;
@@ -163,7 +164,7 @@ public class Buggy5 : MonoBehaviour {
                 if (beingPushed)
                 {
                     //float shoveStrength = Mathf.Clamp(1.50f * maxShoveStrength * swipeControls.SwipeSpeed / 1500, 1.50f * speed + 2, maxShoveStrength);
-                    float shoveStrength = Mathf.Max(minShoveStrength, speed * 1.75f);
+                    float shoveStrength = Mathf.Max(minShoveStrength, speed * 2f);
                     Debug.Log("Shoved to next pusher: " + ". Shove strength = " + (shoveStrength));
                     Shove(shoveStrength);
                     Transition();
@@ -321,7 +322,8 @@ public class Buggy5 : MonoBehaviour {
                 if (!skipMeshUpdate)
                     GFX.rotation = Quaternion.Slerp(GFX.rotation, lookRotation, 10 * Time.deltaTime);
             }
-            GFX.position = transform.position + GFX.transform.up / 2 - Vector3.forward * 2; // To do: Add y and z offset for buggy
+            //GFX.position = transform.position + MeshPositionOffset - Vector3.forward * 2; // To do: Add y and z offset for buggy
+            GFX.position = transform.position + MeshPositionOffset;
         }
     }
     IEnumerator setMaxPusherSpeed(float s, float d)
