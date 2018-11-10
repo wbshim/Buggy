@@ -64,6 +64,10 @@ public class Buggy5 : MonoBehaviour {
     // Pushers
     public Pusher3[] pushers;
     Pusher3 currentPusher;
+    public Pusher3 CurrentPusher
+    {
+        get { return currentPusher; }
+    }
     public float maxPusherSpeed;
     bool beingPushed = true;
     private IEnumerator _setMaxPusherSpeed;
@@ -83,7 +87,7 @@ public class Buggy5 : MonoBehaviour {
         get { return inTransition; }
         set { inTransition = value; }
     }
-    Pushbar pushbar;
+    public Pushbar pushbar;
 
     public LayerMask mask;
        
@@ -119,12 +123,12 @@ public class Buggy5 : MonoBehaviour {
             if (p != null)
             {
                 p.SetBuggy(this);
+                p.SetPushbar(this.pushbar);
                 if (p.hill > 1)
                     p.IsPushing = false;
             }
         }
         heatDuration = 0;
-        pushbar = GetComponentInChildren<Pushbar>();
     }
 	
 	// Update is called once per frame
@@ -186,7 +190,7 @@ public class Buggy5 : MonoBehaviour {
         turnAccel = Vector3.Lerp(turnAccel, Input.acceleration, TurnSmoothing * Time.deltaTime);
         Turn();
         UpdateRotationSpeed();
-        CheckWheelSlip();
+        //CheckWheelSlip();
         #endregion
 
         #region Kinematics
@@ -231,6 +235,7 @@ public class Buggy5 : MonoBehaviour {
         if (inTransition)
             if (pushers[currentPusher.hill] != null)
             {
+                // Make the next pusher start running
                 pushers[currentPusher.hill].Run(pusherSpeed, false);
             }
 
@@ -309,7 +314,7 @@ public class Buggy5 : MonoBehaviour {
         Pusher3 lastPusher = currentPusher;
         currentPusher = pushers[lastPusher.hill];
         inTransition = false;
-        //Debug.Log("Transitioning from Hill " + lastPusher.hill + " pusher to Hill " + currentPusher.hill + " pusher");
+        Debug.Log("Transitioning from Hill " + lastPusher.hill + " pusher to Hill " + currentPusher.hill + " pusher");
         lastPusher.TransitionOut();
     }
     void BuggyMeshUpdate()
@@ -350,7 +355,6 @@ public class Buggy5 : MonoBehaviour {
                     lookDirection = transform.position - lastPos;
                 }
             }
-            //lookRotation = Quaternion.LookRotation(lookDirection) * Quaternion.Euler(-90, 0, 90);
             lookRotation = Quaternion.LookRotation(lookDirection);
             yield return new WaitForSeconds(0.05f);
         }
@@ -387,19 +391,20 @@ public class Buggy5 : MonoBehaviour {
         }
 
     }
-    void CheckWheelSlip()
-    {
-        float minSpeedDecreasingTraction = 15f;
-        float maxSpeedDecreasingTraction = 20f;
-        float minSlipRotationSpeed = maxRotationSpeed * 0.6f;
-        float slipSlope = (minSlipRotationSpeed - maxRotationSpeed) / (maxSpeedDecreasingTraction - minSpeedDecreasingTraction);
-        float wheelSlipRotationSpeed;
-        if (speed < minSpeedDecreasingTraction)
-            wheelSlipRotationSpeed = maxRotationSpeed + 1;
-        else if (speed >= maxSpeedDecreasingTraction)
-            wheelSlipRotationSpeed = minSlipRotationSpeed;
-        else
-            wheelSlipRotationSpeed = slipSlope * (speed - minSpeedDecreasingTraction) + minSlipRotationSpeed;
-        //Debug.Log("Buggy speed: " + speed + ", Rotation speed: " + Mathf.Abs(rotationSpeed) + ", Wheels slip if turning at " + wheelSlipRotationSpeed);
-    }
+
+    //void CheckWheelSlip()
+    //{
+    //    float minSpeedDecreasingTraction = 15f;
+    //    float maxSpeedDecreasingTraction = 20f;
+    //    float minSlipRotationSpeed = maxRotationSpeed * 0.6f;
+    //    float slipSlope = (minSlipRotationSpeed - maxRotationSpeed) / (maxSpeedDecreasingTraction - minSpeedDecreasingTraction);
+    //    float wheelSlipRotationSpeed;
+    //    if (speed < minSpeedDecreasingTraction)
+    //        wheelSlipRotationSpeed = maxRotationSpeed + 1;
+    //    else if (speed >= maxSpeedDecreasingTraction)
+    //        wheelSlipRotationSpeed = minSlipRotationSpeed;
+    //    else
+    //        wheelSlipRotationSpeed = slipSlope * (speed - minSpeedDecreasingTraction) + minSlipRotationSpeed;
+    //    //Debug.Log("Buggy speed: " + speed + ", Rotation speed: " + Mathf.Abs(rotationSpeed) + ", Wheels slip if turning at " + wheelSlipRotationSpeed);
+    //}
 }

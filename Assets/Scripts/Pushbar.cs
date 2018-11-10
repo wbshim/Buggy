@@ -10,6 +10,10 @@ public class Pushbar : MonoBehaviour {
     {
         buggy = GetComponentInParent<Buggy5>();
     }
-
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(transform.position, 1);
+    }
 
 }

@@ -21,6 +21,8 @@ public class Pusher3 : MonoBehaviour {
     Vector3 lastPos;
 
     Buggy5 buggy;
+    Pushbar pushbar;
+
     bool isPushing = true;
     public bool IsPushing
     {
@@ -47,27 +49,42 @@ public class Pusher3 : MonoBehaviour {
     {
         buggy = _buggy;
     }
+    public void SetPushbar(Pushbar _pushbar)
+    {
+        pushbar = _pushbar;
+    }
 
     public void Run(float _speed, bool lookAtBuggy)
     {
         controller.Move(transform.forward * _speed * Time.deltaTime);
         controller.Move(-transform.up * 9.8f * Time.deltaTime);
-        float distToBuggy = Vector3.Distance(buggy.transform.position, transform.position);
-        float relPosToBuggy = Vector3.Dot(buggy.transform.position - transform.position, transform.forward);
-        //Debug.Log("Distance to buggy = " + distToBuggy);
-        if(distToBuggy < 5)
+        float distToBuggy = Vector3.Distance(pushbar.transform.position, transform.position);
+        float relPosToBuggy = Vector3.Dot(pushbar.transform.position - transform.position, transform.forward);
+        if(relPosToBuggy > 0)
         {
-            minBuggyDistReached = true;
+            Debug.Log("Hill " + hill.ToString() + " pusher is behind the buggy");
         }
+        else
+        {
+            Debug.Log("Hill " + hill.ToString() + " pusher is in front of the buggy");
+        }
+        if (distToBuggy < 5 && relPosToBuggy > 0)
+            minBuggyDistReached = true;
         if (relPosToBuggy > 0 && minBuggyDistReached && lookAtBuggy)
+        {
+            Debug.Log(hill.ToString() + " looking at buggy.");
             LookAtBuggy();
+        }
     }
     void LookAtBuggy()
     {
-        Vector3 buggyDirection = buggy.transform.position - transform.position;
+        // Makes pusher target pushbar
+        Vector3 buggyDirection = pushbar.transform.position - transform.position;
         buggyDirection.y = 0;
         Quaternion lookDirection = Quaternion.LookRotation(buggyDirection);
         transform.rotation = Quaternion.Slerp(transform.rotation, lookDirection, 5 * Time.deltaTime);
+        Debug.DrawRay(transform.position, buggyDirection * 5, Color.red);
+        Debug.DrawLine(transform.position, buggy.transform.position, Color.blue);
     }
     public void TransitionOut()
     {
