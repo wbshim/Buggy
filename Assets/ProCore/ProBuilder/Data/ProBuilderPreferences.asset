@@ -47,7 +47,7 @@ MonoBehaviour:
   - 0
   - 0
   - 90
-  - 0.001
+  - 2
   m_String_values:
   - Assets/ProCore/ProBuilder/Data/Default Material Palette.asset
   m_Color_values: []
