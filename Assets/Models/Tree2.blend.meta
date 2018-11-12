@@ -11,6 +11,7 @@ ModelImporter:
     100010: Cylinder
     100012: //RootNode
     100014: Plane
+    100016: Plane_001
     400000: Cone
     400002: Cone_001
     400004: Cone_002
@@ -19,11 +20,15 @@ ModelImporter:
     400010: Cylinder
     400012: //RootNode
     400014: Plane
+    400016: Plane_001
     2100000: unnamed
     2100002: Material_001__TreeLeaves2UV
     2100004: Material_002__Tree2UV_001
     2100006: Material_002__TreeLeaves2UV
     2100008: Material_002__TreeLeaves2_png
+    2100010: Material__TreeLeaves_png
+    2100012: Material_002__TreeTrunkUV
+    2100014: None__TreeSideLeaves_png
     2300000: Cone
     2300002: Cone_001
     2300004: Cone_002
@@ -32,6 +37,7 @@ ModelImporter:
     2300010: Cylinder
     2300012: //RootNode
     2300014: Plane
+    2300016: Plane_001
     3300000: Cone
     3300002: Cone_001
     3300004: Cone_002
@@ -40,6 +46,7 @@ ModelImporter:
     3300010: Cylinder
     3300012: //RootNode
     3300014: Plane
+    3300016: Plane_001
     4300000: Cone_004
     4300002: Cone_003
     4300004: Cone_002
@@ -47,6 +54,7 @@ ModelImporter:
     4300008: Cone
     4300010: Cylinder
     4300012: Plane
+    4300014: Plane_001
     7400000: Default Take
     9500000: //RootNode
     2186277476908879412: ImportLogs
